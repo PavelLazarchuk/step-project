@@ -63,12 +63,12 @@ window.onload = function () {
     });
 
     //section-amazingwork button add image 
-    let index = 0;
+    let count = 0;
     document.getElementById('section-amazingwork-load').onclick = function () {
         document.getElementById('load-spinner').style.display = "block";
         setTimeout(function() {
             document.getElementById('load-spinner').style.display = "none";
-            if (index == 0) {
+            if (count == 0) {
                 let linkImage1 = ["img/graphicdesign/graphic-design1.jpg", "img/graphicdesign/graphic-design2.jpg",
                     "img/graphicdesign/graphic-design3.jpg", "img/graphicdesign/graphic-design4.jpg",
                     "img/graphicdesign/graphic-design5.jpg", "img/graphicdesign/graphic-design6.jpg",
@@ -100,10 +100,10 @@ window.onload = function () {
                 }
                 document.getElementById('section-amazingwork-img').appendChild(newDiv);
             }
-            if (index == 1) {
+            if (count == 1) {
                 document.getElementById('section-amazingwork-load').remove();
             }
-            index++;
+            count++;
         }, 2000);
     } 
 
@@ -142,23 +142,37 @@ window.onload = function () {
     });
 
     //section-Gallery of best images Masonry
-    $("#grid-masonry").masonry({
-        columnWidth: 10
+    $('#grid-masonry').masonry({
+        columnWidth: 175,
+        itemSelector: '.grid-item',
+        gutter: 20
     });
+    let count2 = 0;
+
+    function getItemElement() {
+        let elem = document.createElement('div');
+        let imageNum = Math.floor((Math.random() * 6) + 1);
+        elem.innerHTML = `<img src="img/gallery/post-${imageNum}-img.png"><div class="section-grid-hover">
+        <i class="fas fa-search" id="search"></i><i class="fas fa-expand-arrows-alt" id="arrows"></i></div>`;
+        elem.className = "section-grid-img grid-item";
+        return elem;
+    }
+    function addGalleryImages() {
+        count2++;
+        if (count2 === 2) {
+            document.getElementById('section-gallery-load').remove();
+        }
+        let elems = [getItemElement(), getItemElement(), getItemElement()];
+        let $elems = $(elems);
+        
+        $('#grid-masonry').append($elems).masonry('appended', $elems);
+      
+    }
     document.getElementById('section-gallery-load').onclick = function () {
         document.getElementById('load-spinner2').style.display = "block";
         setTimeout(function() {
             document.getElementById('load-spinner2').style.display = "none";
-            let array = ['img/gallery/post-1-img.png', 'img/gallery/post-2-img.png', 'img/gallery/post-3-img.png',
-                        'img/gallery/post-4-img.png', 'img/gallery/post-5-img.png', 'img/gallery/post-6-img.png'];
-                        let newImg;
-            $(array).each(function(i) {
-                
-                newImg += `<img src='${i}'>`;
-            });
-            $("#grid-masonry").append( newImg )
-            .masonry( 'appended', newImg );
-            document.getElementById('section-gallery-load').remove();
+            addGalleryImages(); 
         }, 2000);
     }
 };
